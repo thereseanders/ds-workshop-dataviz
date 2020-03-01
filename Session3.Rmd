@@ -1,10 +1,10 @@
 ---
 title: "Hertie School/SCRIPTS Data Science Workshop Series"
-subtitle: "Session 2: Modern data management with R"
+subtitle: "Session 3: Data Visualization with `ggplot2`"
 author:
 - Therese Anders^[Instructor, Hertie School/SCRIPTS, anders@hertie-school.org.]
 - Allison Koh^[Teaching Assistant, Hertie School, kohallison3@gmail.com.]
-date: January 17, 2020
+date: March 6, 2020
 output: pdf_document
 editor_options: 
   chunk_output_type: inline
@@ -20,17 +20,16 @@ pacman::p_load(
   haven,
   # additions for the workshops 
   gapminder,
-  ggalluvial,
   hflights,
+  viridis, 
   fivethirtyeight,
   pscl
   )
 ```
 
-
-Data visualization with `ggplot2`
-
 # Introduction
+
+The goal of this workshop series is to create a space for faculty and researchers at the Hertie School and SCRIPTS to efficiently catch up with recent developments in data science topics and tools. In the spring semester, we will focus on the basics of data manipulation and visualization in R, text as data, the gathering of information from online sources, and principles of machine learning.
 
 # Basic Principles of `ggplot2`
 
@@ -50,8 +49,7 @@ str(df)
 
 ## `ggplot2` package
 
-`ggplot2` was developed by Hadley Wickham based on Leland Wilkinson’s "grammar of graphics" principles.  According to the "grammar of graphics," you can create each graph from the following components: "a data set, a set of geoms--visual marks that represent data points, and a coordinate
-system"  (Wilkinson 2012). You can access the data visualization with `ggplot2` cheat sheet [here](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf).
+`ggplot2` was developed by Hadley Wickham based on Leland Wilkinson’s "grammar of graphics" principles.  According to the "grammar of graphics," you can create each graph from the following components: "a data set, a set of geoms--visual marks that represent data points, and a coordinate system"  (Wilkinson 2012). You can access the data visualization with `ggplot2` cheat sheet [here](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf).
 
 For most applications, the code to produce a graph in `ggplot2` is roughly structured as follows:
 
@@ -127,7 +125,7 @@ ggplot(df,
   geom_line(stat = "density")
 ```
 
-# Controlling the appearance of graphs
+## Controlling the appearance of graphs
 The default graphs we have produced so far are not (yet) ready for publication. In particular, they lack informative labels. In addition, we might want to change the appearance of the graph in terms of size, color, linetype, etc.
 
 ## Adding title, subtitle, and axes titles
@@ -200,8 +198,10 @@ ggplot(df,
        y = "Density")
 ```
 
-## Changing the width of the line
-We can adjust the width of the line via the `size` parameter within `geom_line()`. Note that the `size` parameter is universal in the way that it controls line width in line plots and point size in scatter plots.
+## Changing width and opacity of the line (not shown in class)
+
+Changing the width of the line
+We can adjust the *width* of the line via the `size` parameter within `geom_line()`. Note that the `size` parameter is universal in the way that it controls line width in line plots and point size in scatter plots.
 ```{r, warning = F, message = F, fig.height = 2, fig.width = 3}
 ggplot(df,
        aes(x = lifeExp)) +
@@ -215,8 +215,7 @@ ggplot(df,
        y = "Density")
 ```
 
-## Changing the opacity of the line
-We can adjust the opacity of the line via the `alpha` parameter within any geometric object. The `alpha` parameter ranges between zero and one. Adjusting the opacity of the geometric objects is especially important when plotting multiple lines (or objects) in the same graph to reduce overplotting.
+We can adjust the *opacity* of the line via the `alpha` parameter within any geometric object. The `alpha` parameter ranges between zero and one. Adjusting the opacity of the geometric objects is especially important when plotting multiple lines (or objects) in the same graph to reduce overplotting.
 
 ```{r, warning = F, message = F, fig.height = 2, fig.width = 3}
 ggplot(df,
@@ -247,8 +246,9 @@ ggplot(df,
   theme_bw()
 ```
 
-# Graphing distributions across groups
-## Using different colors
+## Graphing distributions across groups
+
+### Using different colors
 Sometimes, we want to compare distributions across different groups in our data set. Suppose, we wanted to assess the distribution of the life expectancy on different continents. We can use the `table()` function to get an overview over the groups in our data.
 ```{r, warning = F, message = F, fig.height = 2.5, fig.width = 5}
 table(df$continent)
@@ -372,7 +372,7 @@ ggplot(subset(df),
   geom_boxplot() +
   labs(title = "Distribution of global life expectancy 1952-2007",
        subtitle = "Data source: Gapminder package",
-       x = "Life expenctancy in years",
+       x = "Life expectancy in years",
        y = "Density") +
   theme_bw()
 ```
@@ -391,7 +391,7 @@ ggplot(subset(df),
   coord_flip()
 ```
 
-# Saving plots SWITCH OUT CODE TO MOST RECENT PLOT 
+## Saving plots  
 We can output your plots to many different format using the `ggsave()` function, including but not limited to `.pdf`, `.jpeg`, `.bmp`, `.tiff`, or `.eps`. Here, we output the graph as a Portable Network Graphics (.png) file. We can specify the size of the output graph as well as the resolution in dots per inch (dpi). If no graph is specified, `ggsave()` will save the last graph that was executed. For us, this is the boxplot in horizontal orientation. If we no not specify the complete file path, the plot will be saved to your working directory.
 ```{r, warning = F, message = F}
 ggsave("boxplot_lifeexp_continent.png", width = 6, height = 3, dpi = 400)
@@ -399,7 +399,7 @@ ggsave("boxplot_lifeexp_continent.png", width = 6, height = 3, dpi = 400)
 
 ## Showing relationships in data
 
-### Scatter plots
+## Scatter plots
 In their basic form, scatter plots are used to display values of two variables on a Cartesian coordinate system. Below, we inspect the relationship between GDP per capita and life expectancy.
 ```{r, warning = F, message = F, fig.height = 2, fig.width = 4}
 ggplot(df,
@@ -426,7 +426,7 @@ ggplot(df,
   theme_light()
 ```
 
-### Scaling the data
+## Scaling the data
 One reason why the plot above is hard to read is rooted in the shape of the distribution of the GDP per capita variable. GDP per capita has a strong right skew. We can correct for this skew and transform the variable to have a more "normal" distribution by taking the natural logarithm. There are multiple ways to do this.
 
 1. Create a new variable [not shown below]
@@ -455,7 +455,6 @@ ggplot(df,
 
 *Transforming the variable using the natural logarithm within `aes()` causes the x-axis to be displayed in log values. Using `scale_x_continuous()`, the data is transformed in the same way, however, the x-axis is displayed in the original, non-logged version.*
 
-
 We can use the same principle in bivariate (or multivariate) displays of data. `scale` transformations are extremely helpful, especially when transforming color scales. However, below, I use the transformation on the variable and reflect it in the axis label clarify that it is the relationship between life expectancy and the natural log of GDP per capita that has a strong positive relationship.
 ```{r, warning = F, message = F, fig.height = 2, fig.width = 4}
 ggplot(df,
@@ -469,7 +468,7 @@ ggplot(df,
   theme_light()
 ```
 
-### Shape
+## Shape
 We can adjust the default symbol used by `ggplot2` to display the points. The parameter is called [`shape`](http://www.sthda.com/english/wiki/ggplot2-point-shapes).
 ```{r, warning = F, message = F, fig.height = 2, fig.width = 4}
 ggplot(df,
@@ -498,7 +497,7 @@ ggplot(subset(df, year == 2007),
   theme_light()
 ```
 
-### Adding trend lines
+## Adding trend lines
 The plot above illustrates a strong positive relationship between GDP per capita and life expectancy. We can highlight the direction and strength of the relationship by adding a trend line using the [`geom_smooth()`](https://ggplot2.tidyverse.org/reference/geom_smooth.html) aesthetic. 
 
 The default smoothing method is `loess` for less than 1,000 observations and `gam` (Generalized Additive Models) for observations greater or equal to 1,000. `ggplot2` informs us which smoothing method was used via a message. By default, a 95% confidence interval is added to the trend line. It shows that the negative relationship at higher values of GDP per capita has a much lower precision than the positive relationship we observe for the majority of the observations.
@@ -598,90 +597,9 @@ ggplot(subset(df, country %in% c("Brazil", "Russia", "China", "India", "South Af
 
 ```
 
+# Data Wrangling for Visualization 
 
-### Spaghetti plots
-Spaghetti plots are line plots with many lines displayed in a plot. Typically, the lines are very thin and/or have a high level of transparency to show trends in the data. Below, I am graphing the evolution of life expectancy for all countries in the data set. We allow each country to have its own line by using the `group()` parameter inside `aes()`.
-
-```{r, warning = F, fig.height = 2.5, fig.width = 4, message = F}
-brics <- c("Brazil", "Russia", "China", "India", "South Africa")
-ggplot(df,
-       aes(x = year,
-           y = lifeExp,
-           group = country)) +
-  geom_line(alpha = 0.2, 
-            size = 0.1) +
-  labs(title = "Life expectancy over time",
-       x = "Year",
-       y = "Life expectancy") +
-  theme_light() +
-  geom_line(data = subset(df, country %in% "South Africa"),
-            color = "red")
-```
-
-We could display the temporal trend for select countries using color.
-
-```{r, warning = F, fig.height = 2.5, fig.width = 5, message = F}
-ggplot(subset(df, !(country %in% brics)),
-       aes(x = year,
-           y = lifeExp,
-           group = country)) +
-  geom_line(alpha = 0.2, 
-            size = 0.1) +
-  labs(title = "Life expectancy over time",
-       x = "Year",
-       y = "Life expectancy") +
-  theme_light() +
-  geom_line(data = subset(df, country %in% brics),
-            aes(color = country),
-            size = 0.5) +
-  scale_color_brewer(name = "",
-                     palette = "RdYlBu")
-```
-
-In the plot below, I use a log transformation on GDP per capita within the `scale_color_gradient()` function to display GDP per capita values on their original scale but map the color of the lines to the natural log of GDP per capita.
-```{r, warning = F, message = F, fig.height = 3, fig.width = 8}
-ggplot(df,
-       aes(x = year,
-           y = lifeExp,
-           group = country,
-           color = gdpPercap)) +
-  
-  # Setting up spaghetti plot
-  geom_line(alpha = 1,
-            size = 0.1) +
-  
-  # Each continent in a separate panel
-  facet_wrap(~continent, nrow = 1) +
-  
-  # Choosing defalt theme
-  theme_light() +
-  
-  # Adjusting default theme
-  theme(panel.background = element_rect(fill = "black"),
-        panel.grid = element_line(size = 0.1),
-        strip.background = element_rect(fill = "black"),
-        strip.text = element_text(color = "white")) +
-  
-  # Making the colors pop
-  scale_color_gradient(low = "#f7ff00",
-                      high = "#00f7ff",
-                      name = "GDP per capita",
-                       trans = "log") +
-  
-  # Additional appearance adjustments
-  labs(x = "Year",
-       y = "Life expectancy",
-       title = "Global life expectancy") +
-  theme(legend.position = "bottom",
-        legend.key.width = unit(1.5, "cm")) +
-  scale_x_continuous(breaks = seq(1950, 2010, 25))
-```
-
-# Why data wrangling in a visualization workshop?
-This workshop focuses on data visualization. However, in practice, data visualization is only the last part in a long stream of data gathering, cleaning, wrangling, and analysis. 
-
-![https://d33wubrfki0l68.cloudfront.net/571b056757d68e6df81a3e3853f54d3c76ad6efc/32d37/diagrams/data-science.png](data-science.png)
-
+*Why data wrangling in a visualization workshop?* In practice, data visualization is only the last part in a long stream of data gathering, cleaning, wrangling, and analysis. 
 
 `ggplot2` is the most powerful when we have "tidy" data. There are three rules for tidy data, based on Hadley Wickham's [R for Data Science](https://r4ds.had.co.nz/tidy-data.html).
 
@@ -696,7 +614,7 @@ If the data are in a tidy format, we can pass separate variables to separate geo
 
 RStudio offers a great [Data wrangling cheat sheet](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf) you should take a look at.
 
-# Introduction to `dplyr`
+## Introduction to `dplyr`
 `dplyr` does not accept tables or vectors, just data frames (similar to `ggplot2`)! `dplyr` uses a strategy called "Split - Apply - Combine". Some of the key functions include:
 
 * `select()`: Subset columns.
@@ -960,11 +878,16 @@ la_flights_new3[la_flights_new3$Dest == "BUR",]
 
 
 
-# Heatmaps
+## Heatmaps
 For this example, we will go back to our original `data` tibble that contains the complete set of flight data for the Houston airports in 2011. Suppose we wanted to know, what are the busiest times at each of the two Houston airports, George Bush Intercontinental/Houston Airport (IAH) and William P. Hobby Airport (HOU). We create a new summary data frame that counts the number of departures per hour and day for each of the airports. We display these data using heatmaps.
 
 To do so, we need to create a new variable that codes the hour of departure, using information from the `DepTime` variable. There are more advanced workflows available using the `stringr` and/or `lubridate` packages (both are part of the `tidyverse`). However, because we want to focus on data visualization, I simply divide the departure time by 100 and then use the `floor()` function to extract the hour of departure.
-```{r,  warning = F, message = F, fig.height = 2, fig.width = 5}
+
+For this data frame, we also have to impute missing data. The data frame does not include observations for hours during which there are no flights, so we can assume that that these observations are not actually missing, but that there are no flights during these time slots.  
+
+Therefore, we create a data frame with all possible combinations of the variable values for day of the week and hour using `expand.grid()`, and use the `full_join()` function to create a new data frame (**not shown in class**). Similar to the application above, this procedure will result in missing values. We again use the `replace` function to re-code these missing values to zero.
+
+```{r,  warning = F, message = F, fig.height = 2, fig.width = 5, include = FALSE}
 departures <- data %>%
   
   dplyr::mutate(hour = floor(DepTime/100))  %>%
@@ -980,8 +903,9 @@ ggplot(departures,
   geom_tile()
 ```
 
-There are a number of ways to improve the plot. We will go through them step by step. There is a weird observation in hour 24 that should not be there. The hour has to be either 23 or 0. Lets re-code this observation to an hour value of 0 using the `replace()` function from `dplyr`.
-```{r, warning = F, message = F, fig.height = 2, fig.width = 6}
+```{r, warning = F, message = F, fig.height = 2, fig.width = 6, include = FALSE}
+# There are a number of ways to improve the plot. We will go through them step by step. There is a weird observation in hour 24 that should not be there. The hour has to be either 23 or 0. Lets re-code this observation to an hour value of 0 using the `replace()` function from `dplyr`.
+
 test <- data %>%
   filter(!is.na(DepTime)) %>%
   mutate(hour = floor(DepTime/100)) %>%
@@ -1005,10 +929,7 @@ ggplot(departures,
   geom_tile() 
 ```
 
-There are a number of possible observations that do not have value in the data frame, in particular in the early morning ours. For this application, we can assume that that these observations are not actually missing, but that there are no flights during these time slots. 
-
-Therefore, we create a data frame with all possible combinations of the variable values for day of the week and hour using `expand.grid()`, and use the `full_join()` function to create a new data frame. Similar to the application above, this procedure will result in missing values. We again use the `replace` function to re-code these missing values to zero.
-```{r, warning = F, message = F, fig.height = 2, fig.width = 6}
+```{r creating new df with imputed values and writing csv, warning = F, message = F, fig.height = 2, fig.width = 6, include = FALSE}
 # Empty data frame
 combo <- expand.grid(DayOfWeek = seq(1, 7),
                      hour = seq(0,23),
@@ -1030,7 +951,15 @@ departures <- data %>%
   # replacing missing values with zero
   mutate(count = replace(count, is.na(count), 0))
 
-# visualizing it
+# write_csv
+# readr::write_csv(departures,"data/hflights_impute.csv")
+```
+
+```{r}
+# loading data frame
+departures <- readr::read_csv("data/hflights_impute.csv")
+
+# visualizing data on flights from HOU
 ggplot(departures,
        aes(x = hour,
            y = DayOfWeek,
@@ -1038,7 +967,36 @@ ggplot(departures,
   geom_tile() 
 ```
 
-Now, lets change the appearance of the graph. Below, we use color scales from the `viridis` package.
+To improve on this graph, we can add some of the other elements offered by the `ggplot2` package. 
+
+```{r}
+# loading data frame
+departures <- readr::read_csv("data/hflights_impute.csv")
+
+# visualizing data on flights from HOU
+ggplot(departures,
+       aes(x = hour,
+           y = DayOfWeek,
+           fill = count)) +
+  geom_tile() + 
+    coord_flip() +
+  labs(x = "Hour",
+       y = "",
+       title = "Departures from Houston airports") +
+  
+  # Changing appearance of the plot
+  theme_light() +
+  theme(panel.grid = element_blank(),
+        legend.position = "bottom",
+        legend.key.width = unit(1.5, "cm"),
+        panel.border=element_blank()) +
+  
+  # Making the space equal by fixing aspect ratio 
+  # Reducing space
+  coord_fixed(expand = c(0,0))
+```
+
+Changing the color scheme would also improve the appearance of this plot. Below, we use color scales from the `viridis` package.
 ```{r, warning = F, message = F, fig.height = 5, fig.width = 7}
 # install.packages("viridis")
 library(viridis)
@@ -1075,13 +1033,20 @@ ggplot(departures,
 table(departures$DayOfWeek)
 ```
 
-# Primer on `tidyr`
-Another important task in data management is data re-shaping. Often, data does not come in the format that we need for data merging, data visualization, statistical analysis, or vectorized programming.
+## Primer on `tidyr`
 
-The `tidyr` package offers two main functions for data re-shaping:
+Often, data does not come in the format that we need for data merging, data visualization, statistical analysis, or vectorized programming. In general, we want data in the following format:
 
-* `gather()`: Shaping data from wide to long.
-* `spread()`: Shaping data from long to wide.
+1. Each variable forms a column.
+2. Each observation forms a row[^6].
+3. For panel data, the unit (e.g. country) and time (e.g. year) identifier form columns.
+
+[^6]: Hadley Wickham (2014, "Tidy Data" in *Journal of Statistical Analysis*) adds another condition, namely that "Each type of observational unit forms a table." We will not go into this here, but I can highly recommend you read Wickham's piece if you want to dive deeper into tidying data.
+
+The `tidyr` package offers two main functions for data reshaping:
+
+* `pivot_longer()`: Shaping data from wide to long.
+* `pivot_wider()`: Shaping data from long to wide.
 
 ## Wide versus long data
 For **wide** data formats, each unit's responses are in a single row. For example:
@@ -1100,16 +1065,16 @@ For **long** data formats, each row denotes the observation of a unit at a given
 | B       | 1990 | 150  | 40  |
 | B       | 1991 | 150  | 45  |
 
-## `gather()`
-We use the `gather()` function to reshape data from wide to long. In general, the syntax of the data is as follows:
+## `pivot_longer()`
+We use the `pivot_longer()` function to reshape data from wide to long. In general, the syntax of the data is as follows:
 
-`new_df <- gather(old_df, key, value, columns to gather)`,
+`new_df <- pivot_longer(old_df, columns to transform, names_to = "name", values_to = "value")`[^7]
 
-where `key` specifies the column name of the variable capturing variable labels (i.e. the original names of the columns to be re-shaped) and `value` the column values to be stored.
+[^7]: If we use the function in a pipe, we do not need to specify the `old_df` parameter. `tidyr` automatically knows to use the lastest version of the data frame in the pipe.
 
-Below, we use the `murder_2015_final` data set from the `fivethirtyeight` package. The data contains number of murders in 83 U.S. cities. The dataset contains a column `murder_2014` and a column `murder_2015`. For tidy data, we want one observation per row and one variable per column. The data is untidy because the two columns confuse the variables `murder` and `year. 
+Below, we use the `murder_2016_prelim` data set from the `fivethirtyeight` package. The data contains number of murders in 79 U.S. cities. The dataset contains a column `murder_2015` and a column `murder_2016`. For tidy data, we want one observation per row and one variable per column. The data is untidy because the two columns confuse the variables `murder` and `year`. 
 
-Below, we use `gather()` to tidy the data. For illustration we drop the variable change to show how to re-create it.
+Below, we use `pivot_longer()` to tidy the data. For illustration we drop the variable change to show how to re-create it.
 
 ```{r}
 # install.packages("tidyr")
@@ -1117,26 +1082,25 @@ library(tidyr)
 
 # install.packages("fivethirtyeight")
 library(fivethirtyeight)
-murder <- fivethirtyeight::murder_2015_final
+murder <- fivethirtyeight::murder_2016_prelim
 head(murder)
 
 # using gather to re-shape 
 murder_tidy <- murder %>%
   dplyr::select(-change) %>%
-  gather(murders_year, value, murders_2014:murders_2015) 
+  pivot_longer(murders_2015:murders_2016, names_to = "murders_year", values_to = "n_murder")
+
 head(murder_tidy)
 ```
 
-We can use the `separate()` function from the `tidyr` package to turn the column `murders_year` into two separate columns and then drop the `murder` column.
-
-**NOTE: An alternative way would be to use regular expressions and the `stringr` package to extract the year from the `murders_year` column.**
+We can use the `separate()` function from the `tidyr` package to turn the column `murders_year` into two separate columns and then drop the `murders` column.
 
 ```{r}
 murder_tidier <- murder %>%
   dplyr::select(-change) %>%
-  gather(murders_year, murders, murders_2014:murders_2015) %>%
-  separate(murders_year, c("trash", "year"), sep = "_") %>%
-  dplyr::select(-trash)
+  pivot_longer(murders_2015:murders_2016,names_to="murders_year",values_to="n_murder") %>% 
+  separate(murders_year,c("murders", "year"), sep = "_") %>%
+  dplyr::select(-murders)
 head(murder_tidier)
 ```
 
@@ -1145,7 +1109,7 @@ Suppose we wanted to know what was the city in Florida with the overall highest 
 ```{r, warning = F, message = F, fig.height = 2.5, fig.width = 5}
 ggplot(subset(murder_tidier, state == "Florida"),
        aes(x = city,
-           y = murders,
+           y = n_murder,
            fill = year)) +
   geom_bar(stat = "identity") +
   coord_flip()
@@ -1159,7 +1123,7 @@ We can use `position = "dodge" within the `geom_bar()` statement place the bars 
 ```{r, warning = F, message = F, fig.height = 2.5, fig.width = 5}
 ggplot(subset(murder_tidier, state == "Florida"),
        aes(x = city,
-           y = murders,
+           y = n_murder,
            fill = year)) +
   geom_bar(stat = "identity", position = "dodge") +
   coord_flip() +
@@ -1180,7 +1144,7 @@ murder_change <- murder_tidier %>%
   arrange(year) %>%
   
   # Creating variable for first difference
-  mutate(diff = murders - lag(murders),
+  mutate(diff = n_murder - lag(n_murder),
          
          # Creating indicator for negative differences
          diff_neg = ifelse(diff < 0, 1, 0))
@@ -1215,75 +1179,50 @@ Below, create a new data frame from `murder_change`, called `murder_change_av`, 
 ```{r, warning = F, message = F, fig.height = 10, fig.width = 8}
 murder_change_av <- murder_change %>%
   ungroup() %>%
-  mutate(aboveav2014 = ifelse(murders >= mean(murders[year == 2014]), 1, 0)) %>%
+  mutate(aboveav2015 = ifelse(n_murder >= mean(n_murder[year == 2015]), 1, 0)) %>%
   ungroup()
 
 ggplot(subset(murder_change_av, !is.na(diff)),
        aes(x = reorder(city, diff),
            y = diff,
-           fill = factor(aboveav2014))) +
+           fill = factor(aboveav2015))) +
   geom_bar(stat = 'identity') +
   coord_flip() +
   theme(axis.text.x = element_text(size = 1),
         legend.position = "none") +
   theme_light() +
   labs(title = "Drivers of increase in murder rates",
-       y = "Change from 2014 to 2015",
+       y = "Change from 2015 to 2016",
        x = "") +
-  scale_fill_manual(name = "Above average\nin 2014",
+  scale_fill_manual(name = "Above average\nin 2015",
                     values = c("0" = "grey",
                                "1" = "orange"),
                     labels = c("No", "Yes"))
   
 ```
 
-## `spread()`
-Suppose we wanted to revert our operation (or generall shape data from a long to a wide format), we can use `tidyr`'s `spread()` function. The syntax is similar to `gather()`.
+## `pivot_wider()`
+Suppose we wanted to revert our operation (or generall shape data from a long to a wide format), we can use `tidyr`'s `pivot_wider()` function. The syntax is similar to `pivot_longer()`.
 
-`new_df <- spread(old_df, key, value)`,
+`new_df <- pivot_wider(old_df, names_from = key, values_from = value)`,
 
-where `key` refers to the colum which contains the values that are to be converted to column names and `value` specifies the column that contains the value which is to be stored in the newly created columns.
+where `key` refers to the colum which contains the values that are to be converted to column names and `value` specifies the column that contains the values which is to be stored in the newly created columns.
 
-For illustration purposes, we first remove the `diff` column below, because it leads to `NA` values when performing the `spread()` operation.
+Below, we semi-revert the creation of a single column containing the variable types and a single column containing our variable values. 
+
 ```{r}
 murders_untidy <- murder_change %>%
   dplyr::select(-diff) %>%
-  spread(year, murders)
+  pivot_wider(names_from = year,
+              values_from = n_murder)
 head(murders_untidy)
 ```
 
-
-
-### An additional note on barplots
-Lets go back to the `hflights` data. Suppose we wanted to know which airline operates the most flights out of either Houston airport. Here, we will be using the operator `n()` to tell `dplyr` to count all the observations for the groups specified in `group_by()`. After computing the result, I would like to arrange the output from highest number of flights to lowest number.
-```{r}
-carriers <- data %>%
-  group_by(Airline) %>%
-  summarise(NoFlights = n()) %>%
-  arrange(desc(NoFlights))
-```
-
-We can display the result graphically using the `geom_bar()` geometric object. Note the following details on the usage of `geom_bar()` from the `ggplot2` package documentation below.
-
-*"The heights of the bars commonly represent one of two things: either a count of cases in each group, or the values in a column of the data frame. By default, geom_bar uses stat="bin". This makes the height of each bar equal to the number of cases in each group, and it is incompatible with mapping values to the y aesthetic. If you want the heights of the bars to represent values in the data, use stat="identity" and map a value to the y aesthetic."* (https://www.rdocumentation.org/packages/ggplot2/versions/1.0.1/topics/geom_bar)
-
-Thus, the creating the count variables using `group_by()` and `summarise()` is not absolutely necessary. However, for more complicated groupings of data, I highly recommend creating a separate data frame and "hard code" groupings of interest before graphing.
-```{r, warning = F, message = F, fig.height = 2, fig.width = 6}
-# Using default geom_bar(stat = "bin#) on the original data
-ggplot(data,
-       aes(x = Airline)) +
-  geom_bar()
-
-# Using geom_bar(stat = "identity") on grouped data
-ggplot(carriers,
-       aes(x = Airline,
-           y = NoFlights)) +
-  geom_bar(stat = "identity")
-```
-
 # Visualizing regression results
-Today, we will be working with the `politicalInformation` dataset from the `pscl` ("Political Science Computational Laboratory") package.
-```{r}
+
+In data collection for the 2000 American National Election Studies survey, interviewers assigned an ordinal rating to each respondent's "general level of information" about politics and public affairs. We will be working with an adapted version of the `politicalInformation` dataset from the `pscl` ("Political Science Computational Laboratory") package to visualize regression results. 
+
+```{r load original dataset, include=FALSE}
 library(tidyverse)
 
 # install.packages("pscl")
@@ -1291,8 +1230,7 @@ library(pscl)
 head(pscl::politicalInformation)
 ```
 
-We make a copy the original data set to an object called `dat` and create a new variable that codes an above average knowledge rating for the factor levels `Fairly High` and `Very High`. We also recode a number the `collegeDegree` and `female` factor variables, because the "Yes" and "No" values create issues when extracting names from the model summary object later on).
-```{r}
+```{r adapted df, include=FALSE}
 dat <- pscl::politicalInformation %>%
   
   # Note: below we could also use case_when() to code the aboveav variable
@@ -1305,80 +1243,59 @@ dat <- pscl::politicalInformation %>%
            female == "Yes" ~ 1, 
            T ~ 0
          ))
+
+dat <- dat[complete.cases(dat$y),]
 ```
 
-First, lets plot the outcome variable by age. Unfortunately, we cannot see much because of overplotting.
-```{r, warning = F, message = F, fig.height = 3, fig.width = 4}
-ggplot(dat,
-       aes(x = age,
-           y = aboveav)) +
-  geom_point()
+```{r save new df, include=FALSE}
+# readr::write_csv(dat, "data/polinfo.csv")
 ```
 
-
-
-The graph suffers from overplotting. We can tweak the opacity and size of the points and use jitter to reduce its extent. Below, we also add a smoothing line to show the trend in the graph.
-```{r, warning = F, message = F, fig.height = 3, fig.width = 4, echo = F}
-ggplot(dat,
-       aes(x = age,
-           y = aboveav)) +
-  geom_point(position = position_jitter(height = 0.1),
-             alpha = 0.2,
-             size = 0.6) +
-  theme_light() +
-  geom_smooth() +
-  labs(x = "Age",
-       y = "Above average political knowledge")
+```{r load dataset}
+dat <- readr::read_csv("data/polinfo.csv")
 ```
 
-Does the effect vary by gender? The plot below shows that female respondents have a lower probability of being classified as having above average political knowledge across all ages.
-```{r, warning = F, message = F, fig.height = 3, fig.width = 4}
-names(dat)
-ggplot(dat,
-       aes(x = age,
-           y = aboveav,
-           color = factor(female))) +
-  geom_point(position = position_jitter(height = 0.1),
-             alpha = 0.2,
-             size = 0.6) +
-  theme_light() +
-  geom_smooth() +
-  labs(x = "Age",
-       y = "Above average political knowledge")
-```
+Let's run an OLS regression to identify the determinants of interviewer ratings on "general level of information" about politics and public affairs (**not shown in class; results stored in the RStudio Cloud environment**)
 
-
-
-Lets run a regression (logit model) of the probability of the interviewers rating a person as above average on political knowledge.
 ```{r}
-mod1 <- glm(aboveav ~ collegeDegree + female + length + age,
-           data = dat,
-           family = binomial(link = "logit"))
-summary(mod1)
+# mod1 <- lm(y ~ collegeDegree + female + length + age,
+           # data = dat)
+# summary(mod1)
 ```
  
 ## Coefficient plot
 There are a number of packages that offer off-the-shelf solutions to plotting coefficient plots for regression outcomes. In this workshop, we will create a coefficient plot manually. This will allow you to create coefficient plots for models that are not supported by existing packages.
  
-Below, we extract properties of interest from the `mod1` object.
+Below, we extract properties of interest from the `mod1` object (**not shown in class; data frame stored in RStudio Cloud environment**).
 ```{r}
-str(summary(mod1)$coefficients)
-dimnames(summary(mod1)$coefficients)
+# str(summary(mod1)$coefficients)
+# dimnames(summary(mod1)$coefficients)
+# 
+# # Note that dimnames() returns a list object, not a vector
+# df_mod1 <- data.frame(vars = dimnames(summary(mod1)$coefficients)[[1]],
+#                       coef = summary(mod1)$coefficients[,1],
+#                       se = summary(mod1)$coefficients[,2]) %>%
+#   
+#   # Computing CIs
+#   mutate(cilo_95 = coef - 1.96*se,
+#          cihi_95 = coef + 1.96*se,
+#          cilo_99 = coef - 2.56*se,
+#          cihi_99 = coef + 2.56*se) %>% 
+# 
+#   # remove intercept for coef plot   
+#   filter(vars != "(Intercept)")
+```
 
-# Note that dimnames() returns a list object, not a vector
-df_mod1 <- data.frame(vars = dimnames(summary(mod1)$coefficients)[[1]],
-                      coef = summary(mod1)$coefficients[,1],
-                      se = summary(mod1)$coefficients[,2]) %>%
-  
-  # Computing CIs
-  mutate(cilo_95 = coef - 1.96*se,
-         cihi_95 = coef + 1.96*se,
-         cilo_99 = coef - 2.56*se,
-         cihi_99 = coef + 2.56*se) 
+```{r saving model results to data folder, include=FALSE}
+# readr::write_csv(df_mod1, "data/polinfo_mod1results.csv")
 ```
 
 We can graph the coefficient plot using the `geom_point()` aesthetic for the coefficient and the `geom_linerange()` aesthetic for the 95% confidence intervals.
 ```{r, warning = F, message = F, fig.height = 2.5, fig.width = 4}
+# load data 
+df_mod1 <- readr::read_csv("data/polinfo_mod1results.csv")
+
+# visualize it 
 ggplot(df_mod1,
        aes(x = vars,
            y = coef)) +
@@ -1386,19 +1303,7 @@ ggplot(df_mod1,
   geom_linerange(aes(ymin = cilo_95, ymax = cihi_95))
 ```
 
-Let's add a thinner line for the 99% confidence confidence interval.
-```{r, warning = F, message = F, fig.height = 2.5, fig.width = 4}
-ggplot(df_mod1,
-       aes(x = vars,
-           y = coef)) +
-  geom_point() +
-  geom_linerange(aes(ymin = cilo_95, ymax = cihi_95),
-                 size = 1) +
-  geom_linerange(aes(ymin = cilo_99, ymax = cihi_99),
-                 size = 0.5)
-```
-
-Finally, we flip the axes and order the coefficients based on their size to clean up the plot. We also add a line at zero to illustrate which coefficients are statistically significantly different from zero. Note that I add the zero line before the `geom_point()` aesthetic so it is in the background.
+We can flip the axes and order the coefficients based on their size to clean up the plot. We also add a line at zero to illustrate which coefficients are statistically significantly different from zero. Note that I add the zero line before the `geom_point()` aesthetic so it is in the background.
 ```{r, warning = F, message = F, fig.height = 3, fig.width = 3}
 ggplot(df_mod1,
        aes(x = reorder(vars, coef),
@@ -1407,15 +1312,15 @@ ggplot(df_mod1,
   geom_point() +
   geom_linerange(aes(ymin = cilo_95, ymax = cihi_95),
                  size = 1) +
-  geom_linerange(aes(ymin = cilo_99, ymax = cihi_99),
-                 size = 0.5) +
   coord_flip() +
   theme_light()
 ```
 
-Suppose, we estimated another model that incorporates a quadratic term for age (since we saw from the earlier plot that age appears to have a curvilinear effect on the probability of being classified as above average on political knowledge). We can add these estimates to the data frame of regression results and plot them on the same coefficient plot to compare the results.
+## Plotting predicted probabilities 
 
-Below, I estimate a new model, `mod2` that includes the squared `age` variable. Note that I add an indicator for the model number `modnum` that we will later use to visually distinguish the results from both models.
+Suppose, we estimated a logit model of the probability of being classified as above average on political knowledge, incorporating a quadratic term for age. We can add these estimates to the data frame of regression results and plot them on the same coefficient plot to compare the results.
+
+(**Not shown in class**) Below, I estimate a new model, `mod2` that includes the squared `age` variable. Note that I add an indicator for the model number `modnum` that we will later use to visually distinguish the results from both models.
 ```{r, warning = F, message = F, fig.height = 3, fig.width = 3}
 dat <- dat %>%
   mutate(age2 = age^2)
@@ -1433,40 +1338,9 @@ df_mod2 <- data.frame(vars = dimnames(summary(mod2)$coefficients)[[1]],
   mutate(cilo_95 = coef - 1.96*se,
          cihi_95 = coef + 1.96*se,
          cilo_99 = coef - 2.56*se,
-         cihi_99 = coef + 2.56*se) %>%
-  
-  mutate(modnum = 2)
+         cihi_99 = coef + 2.56*se)
 ```
 
-Below, I add a `modnum` indicator to the `mod1` data frame and create a joint dataframe using the `bind_rows()` function (similar to `rbind`). Note, that there are more efficient ways to run and combine the results of multiple regression models in a single data frame using loops and lists.
-```{r, warning = F, message = F, fig.height = 3, fig.width = 3}
-df_all <- df_mod1 %>%
-  mutate(modnum = 1) %>%
-  bind_rows(df_mod2)
-```
-
-We pass the `modnum` variable to both, the shape and the color parameter. We use `position = position_dodge()` to separate the lines and points for the two models. `ggplot2` recognizes the `modnum` variable as continuous and therefore does not want to map it to the shape parameter. We can turn `modnum` in a `factor` variable that can be mapped to a shape inside `aes()`. The graph shows that with the exception of the intercept, the model results are not altered much by the inclusion of the quadratic term.
-```{r, warning = F, message = F, fig.height = 3, fig.width = 5}
-ggplot(df_all,
-       aes(x = reorder(vars, coef),
-           y = coef,
-           color = factor(modnum),
-           shape = factor(modnum))) +
-  geom_hline(yintercept = 0, alpha = 0.8, linetype = "dashed") +
-  geom_point(position = position_dodge(width = 0.3)) +
-  geom_linerange(aes(ymin = cilo_95, ymax = cihi_95),
-                 size = 1,
-                 position = position_dodge(width = 0.3)) +
-  geom_linerange(aes(ymin = cilo_99, ymax = cihi_99),
-                 size = 0.3,
-                 position = position_dodge(width = 0.3)) +
-  coord_flip() +
-  theme_light()
-```
-
-
-## Plotting predicted probabilities 
-Logit coefficients are themselves not very informative about effect size, in particular with regard to comparing the relative effect size of each coefficient. In addition, the explanatory variables are on different scales, which makes the effect sizes difficult to compare, both in numerical terms as well as in the coefficient plot above. We can illustrate the size of the effects on the predicted probability of being classified as having above average political knowledge by the interviewers, upon plotting the effect over the entire range of explanatory variables and holding all other variables at their mean (or a baseline value for dichotomous variables).
 ```{r}
 # Male, no college degree
 scen_male <- expand.grid(collegeDegree = 0,
@@ -1482,10 +1356,17 @@ df_male <- cbind(scen_male,
   mutate(predProb = plogis(fit),
          cilo = plogis(fit - (1.96 * se.fit)),
          cihi = plogis(fit + (1.96 * se.fit))) 
+
+# write csv of results to visualize 
+# readr::write_csv(df_male,"data/polinfo_mod2results.csv")
 ```
 
 Below, we use `geom_ribbon()` to graph the confidence interval around the age estimate. Note that we could use `geom_linerange()` instead.
 ```{r, warning = F, message = F, fig.height = 3, fig.width = 4}
+# load data 
+df_male <- readr::read_csv("data/polinfo_mod2results.csv")
+
+# visualize it
 ggplot(df_male, 
        aes(x = age,
            y = predProb)) +
@@ -1494,7 +1375,7 @@ ggplot(df_male,
               alpha = 0.3)
 ```
 
-**Exercise** Suppose we wanted to compare the effect of age on recorded political knowledge for male and female respondents. 
+**Advanced exercise (not shown in class)** Suppose we wanted to compare the effect of age on recorded political knowledge for male and female respondents. 
 
 Please compute the predicted probability of being classified as having above average political knowledge for female respondents, combine the two data frames into one, and graph the results for both male and female respondents in the same plot. Try to re-create the graph below as closely as possible.
 ```{r, warning = F, message = F, fig.height = 3, fig.width = 5}
@@ -1539,7 +1420,6 @@ ggplot(df_both,
 ```
 
 # Sources {-}
-Bacoffe, A. and Silver, N., 2019. *The 2020 Endorsement Primary*. FiveThirtyEight. Retrieved January 13, 2020.
 
-Pew Research Center. 2015. Building Pew Research Center's American Trends Panel, Technical Report, Washington D.C. Available at http://pewrsr.ch/1Jo4nKE. 
+Wilkinson, L., 2012. The grammar of graphics. In *Handbook of Computational Statistics* (pp. 375-414). Springer, Berlin, Heidelberg.
 
