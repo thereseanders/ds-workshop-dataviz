@@ -663,7 +663,7 @@ ggplot(cors,
 
 Bonus: To improve on this graph, we can add some of the other elements offered by the `ggplot2` package. 
 
-```{r,  warning = F, message = F, fig.height = 2, fig.width = 5}
+```{r,  warning = F, message = F, fig.height = 3, fig.width = 6}
 ggplot(cors,
        aes(x = year, y = continent, fill = cor)) +
   geom_tile(color = "white") +
@@ -737,7 +737,7 @@ ggplot(subset(diff07, continent == "Europe" & year == 2007),
 ```
 
 This is really hard to see. Lets flip the axes using `coord_flip()`.
-```{r,  warning = F, message = F, fig.height = 5, fig.width = 3}
+```{r,  warning = F, message = F, fig.height = 5, fig.width = 4}
 ggplot(subset(diff07, continent == "Europe" & year == 2007),
        aes(x = country, y = fd)) +
   geom_col() +
@@ -745,7 +745,7 @@ ggplot(subset(diff07, continent == "Europe" & year == 2007),
 ```
 
 This could useful because countries are ordered alphabetically, but visually, it is is confusing. Let's reorder the country axis based on the value of the population change. The default is ro order the points in ascending order from the origin.
-```{r,  warning = F, message = F, fig.height = 5, fig.width = 3}
+```{r,  warning = F, message = F, fig.height = 5, fig.width = 4}
 ggplot(subset(diff07, continent == "Europe" & year == 2007),
        aes(x = reorder(country, fd), y = (fd/1e+6))) +
   geom_col() +
