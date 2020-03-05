@@ -20,10 +20,7 @@ pacman::p_load(
   haven,
   # additions for the workshops 
   gapminder,
-  hflights,
-  viridis, 
-  fivethirtyeight,
-  pscl
+  viridis
   )
 ```
 
@@ -55,7 +52,7 @@ For an overview of the most important functions and geoms available through `ggp
 library(ggplot2)
 ```
 
-In this first part of the workshop, we will go over basic principles of `ggplot2`. We will work with data from the `gapminder` package. First, install `gapminder` and get an overview over the data. The dataset contains information on life expectancy, GDP per capita, and population by country from 1952 to 2007 in increments of 5 years. Let's use the help function to get an overview of the data.
+In this first part of the workshop, we will go over basic principles of `ggplot2`. We will work with data from the `gapminder` package. First, install `gapminder` and get an overview of the data. The dataset contains information on life expectancy, GDP per capita, and population by country from 1952 to 2007 in increments of 5 years. Let's use the help function to get an overview of the data.
 
 ```{r}
 # install.packages("gapminder")
@@ -129,7 +126,7 @@ ggplot(df,
   geom_line(stat = "density") +
   labs(title = "Distribution of global life expectancy 1952-2007",
        subtitle = "Data source: Gapminder package",
-       x = "Life expenctancy in years",
+       x = "Life expectancy in years",
        y = "Density")
 ```
 
@@ -141,7 +138,7 @@ ggplot(df,
   geom_line(stat = "density") +
   labs(title = "Distribution of global life expectancy 1952-2007",
        subtitle = "Data source: Gapminder package",
-       x = "Life expenctancy in years",
+       x = "Life expectancy in years",
        y = "Density") +
   coord_cartesian(xlim = c(0, 85))
 ```
@@ -157,7 +154,7 @@ ggplot(df,
             color = "darkblue") +
   labs(title = "Distribution of global life expectancy 1952-2007",
        subtitle = "Data source: Gapminder package",
-       x = "Life expenctancy in years",
+       x = "Life expectancy in years",
        y = "Density")
 ```
 
@@ -172,7 +169,7 @@ ggplot(df,
             color = "#2727ff") +
   labs(title = "Distribution of global life expectancy 1952-2007",
        subtitle = "Data source: Gapminder package",
-       x = "Life expenctancy in years",
+       x = "Life expectancy in years",
        y = "Density")
 ```
 
@@ -188,7 +185,7 @@ ggplot(df,
             linetype = "dotdash") +
   labs(title = "Distribution of global life expectancy 1952-2007",
        subtitle = "Data source: Gapminder package",
-       x = "Life expenctancy in years",
+       x = "Life expectancy in years",
        y = "Density")
 ```
 
@@ -204,7 +201,7 @@ ggplot(df,
             size = 2) +
   labs(title = "Distribution of global life expectancy 1952-2007",
        subtitle = "Data source: Gapminder package",
-       x = "Life expenctancy in years",
+       x = "Life expectancy in years",
        y = "Density")
 ```
 
@@ -220,7 +217,7 @@ ggplot(df,
             alpha = 0.5) +
   labs(title = "Distribution of global life expectancy 1952-2007",
        subtitle = "Data source: Gapminder package",
-       x = "Life expenctancy in years",
+       x = "Life expectancy in years",
        y = "Density")
 ```
 
@@ -234,7 +231,7 @@ ggplot(df,
             color = "#2727ff") +
   labs(title = "Distribution of global life expectancy 1952-2007",
        subtitle = "Data source: Gapminder package",
-       x = "Life expenctancy in years",
+       x = "Life expectancy in years",
        y = "Density") +
   theme_bw()
 ```
@@ -256,7 +253,7 @@ ggplot(df,
   geom_line(stat = "density") +
   labs(title = "Distribution of global life expectancy 1952-2007",
        subtitle = "Data source: Gapminder package",
-       x = "Life expenctancy in years",
+       x = "Life expectancy in years",
        y = "Density") +
   theme_bw()
 ```
@@ -273,7 +270,7 @@ ggplot(df,
   geom_line(stat = "density") +
   labs(title = "Distribution of global life expectancy 1952-2007",
        subtitle = "Data source: Gapminder package",
-       x = "Life expenctancy in years",
+       x = "Life expectancy in years",
        y = "Density") +
   theme_bw() +
   scale_color_manual(values = c("Africa" = "darkorange",
@@ -293,7 +290,7 @@ ggplot(df,
   geom_line(stat = "density") +
   labs(title = "Distribution of global life expectancy 1952-2007",
        subtitle = "Data source: Gapminder package",
-       x = "Life expenctancy in years",
+       x = "Life expectancy in years",
        y = "Density") +
   theme_bw() +
   scale_color_brewer(palette = "BrBG",
@@ -301,7 +298,6 @@ ggplot(df,
 ```
 
 Check out the list of color palettes compiled by [Emil Hvitfeldt](https://github.com/EmilHvitfeldt/r-color-palettes/blob/master/type-sorted-palettes.md#sequential-color-palettes). There is even a Wes Anderson movies inspired color scheme available using the package [wesanderson](https://github.com/karthik/wesanderson#the-isle-of-dogs-2018)! Another popular option are the color schemes from the [viridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html) package due to their desirable properties with respect to colorblindness and printability. 
-
 
 ## Using different linetypes
 Many academic journals will only accept graphs on a gray scale. This means that color will not be enough to differentiate five lines. We can use different line types instead by specifying the `linetype` parameter within the `aes()` argument. This also makes the graph more color blind friendly. Notice below that in order to combine the legends for the `lintype` and `color` aesthetics, we need to pass the same name within the `scale` function.
@@ -313,7 +309,7 @@ ggplot(df,
   geom_line(stat = "density") +
   labs(title = "Distribution of global life expectancy 1952-2007",
        subtitle = "Data source: Gapminder package",
-       x = "Life expenctancy in years",
+       x = "Life expectancy in years",
        y = "Density") +
   theme_bw() +
   scale_color_brewer(palette = "Set1",
@@ -330,7 +326,7 @@ ggplot(df,
   geom_line(stat = "density") +
   labs(title = "Distribution of global life expectancy 1952-2007",
        subtitle = "Data source: Gapminder package",
-       x = "Life expenctancy in years",
+       x = "Life expectancy in years",
        y = "Density") +
   theme_bw() +
   facet_wrap(~ continent, nrow = 1)
@@ -343,7 +339,7 @@ ggplot(subset(df),
   geom_line(stat = "density") +
   labs(title = "Distribution of global life expectancy 1952-2007",
        subtitle = "Data source: Gapminder package",
-       x = "Life expenctancy in years",
+       x = "Life expectancy in years",
        y = "Density") +
   theme_bw() +
   facet_grid(year ~ continent, scales = "free_y")
@@ -357,7 +353,7 @@ ggplot(subset(df, continent != "Oceania"),
   geom_line(stat = "density") +
   labs(title = "Distribution of global life expectancy 1952-2007",
        subtitle = "Data source: Gapminder package",
-       x = "Life expenctancy in years",
+       x = "Life expectancy in years",
        y = "Density") +
   theme_bw() +
   facet_grid(year ~ continent)
@@ -643,7 +639,16 @@ ggplot(cors,
   scale_fill_gradient(low = "darkblue", high = "red")
 ```
 
-We can also use existing color gradient schemes to better distinguish values in our plot. Below, we use color scales from the [viridis package](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html). Below we also give the legend a more informative title.
+We can also use existing color gradient schemes to better distinguish values in our plot. Below, we use color scales from the [viridis package](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html). We also give the legend a more informative title.
+
+Using color scales from the `viridis` package is a favorite among many who use `R` for data visualization. First developed for `matplotlib` in Python, this palette offers the following advantages: 
+
+* It is visually appealing 
+* *Perceptual uniformity*: visual perception of change is proportionate to incremental changes in the data. 
+* High contrast: optimal for printing in black-and-white and easier to read for people with color blindness[^1]
+
+[^1]: For more information about the logic behind developing the viridis palette, see [this blog post](https://www.r-bloggers.com/ggplot2-welcome-viridis/). 
+
 ```{r,  warning = F, message = F, fig.height = 2, fig.width = 5}
 ggplot(cors,
        aes(x = year, y = continent, fill = cor)) +
@@ -755,12 +760,24 @@ ggplot(subset(diff07, continent == "Europe" & year == 2007),
 
 # Visualizing regression results
 
-## Coefficient plots
-Please note that the model below is probably not what you should do in the real world.
+The histograms and density plots above show us that there is substantial variation in life expectancy across countries and continents. International organizations and governments are interested in investigating these differences to get an idea of how to allocate resources for addressing related issues. Against this background, suppose we are interested in using the `gapminder` data to learn more about the determinants of a country's life expectancy. 
+
+The model specifications for this example are as follows: 
+
+* Outcome variable $y$: Life expectancy for $n = 142$ countries. (`log(lifeExp)`)
+* Explanatory variables $x$: 
+    * Population (`log(pop)`)
+    * GDP per capita (`log(gdpPercap)`)
+    * Continent (`factor(continent)`, reference category: Africa)
+
+***Disclaimer:*** **This example is meant to illustrate how to visualize regression results---in practice, this may not be the most appropriate model for analyzing the determinants of our dependent variable.**
+
+We use the [`broom` package](https://cran.r-project.org/web/packages/broom/vignettes/broom.html) to convert the results of our model to a tidy data frame. 
+
 ```{r}
 library(broom)
 
-mod1 <- lm(log(lifeExp) ~ log(pop) + log(gdpPercap) + factor(year), data = df)
+mod1 <- lm(log(lifeExp) ~ log(pop) + log(gdpPercap) + factor(continent), data = df)
 summary(mod1)
 df_mod1 <- tidy(mod1)
 ```
@@ -773,7 +790,8 @@ ggplot(df_mod1,
   geom_point()
 ```
 
-Let's drop the intercept along the way and add a line for the null effect. We also already know we create a better plot by flipping the axes. 
+Let's drop the intercept along the way and add a line for the null effect. 
+
 ```{r, warning = F, message = F, fig.height = 2, fig.width = 5}
 df_mod1 %>% 
   dplyr::filter(term != "(Intercept)") %>% 
@@ -809,8 +827,12 @@ df_mod1 %>%
        y = "OLS coefficient with 90% and 95% CIs")
 ```
 
-
 ## Fitted values
+
+Now that we have our baseline model, suppose we want to better understand the interaction between population (`pop`) and GDP per capita (`gdpPercap`). Holding `gdpPercap` constant at two different values (1st and 3rd quantile), we would like to estimate our outcome variable `lifeExp` across a range of values for `pop`. 
+
+First, we use `expand.grid()` to generate the relevant data frame to predict values. We then use the `predict()` function to estimate life expectancy across the specified range of values.  
+
 ```{r}
 mod2 <- lm(lifeExp ~ pop*gdpPercap, data = df)
 
@@ -833,7 +855,8 @@ ggplot(df_pred,
   geom_line()
 ```
 
-Adding confidence bands
+To show our degree of confidence in these estimates, let's add confidence intervals to this visualization. The `ggplot2` package offers several options for illustrating confidence intervals that differ based on the type of data we are working with. Since `pop` is a continuous variable, we use `geom_ribbon()` to plot ranges of the y-axis values along the continuously varying x-axis. 
+
 ```{r}
 head(df_pred)
 ggplot(df_pred,
@@ -884,7 +907,7 @@ ggplot(subset(df),
   geom_boxplot() +
   labs(title = "Distribution of global life expectancy 1952-2007",
        subtitle = "Data source: Gapminder package",
-       x = "Life expenctancy in years",
+       x = "Life expectancy in years",
        y = "Density") +
   theme_bw() +
   coord_flip()
