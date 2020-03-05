@@ -812,7 +812,7 @@ df_mod1 %>%
                  size = 1.2)
 ```
 
-**Exercise**: Make the plot prettier by flipping the axes.
+We can make the plot prettier by flipping the axes.
 
 ```{r, warning = F, message = F, fig.height = 5, fig.width = 5, echo=F}
 df_mod1 %>% 
