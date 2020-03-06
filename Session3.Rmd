@@ -6,8 +6,6 @@ author:
 - Allison Koh^[Teaching Assistant, Hertie School, kohallison3@gmail.com.]
 date: March 6, 2020
 output: pdf_document
-editor_options: 
-  chunk_output_type: inline
 ---
 
 ```{r setup, include=FALSE}
