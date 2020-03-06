@@ -25,7 +25,20 @@ pacman::p_load(
 ```
 
 
-# Basic Principles of `ggplot2`
+
+In this first part of the workshop, we will go over basic principles of `ggplot2`. We will work with data from the `gapminder` package. First, install `gapminder` and get an overview of the data. The dataset contains information on life expectancy, GDP per capita, and population by country from 1952 to 2007 in increments of 5 years. Let's use the help function to get an overview of the data.
+
+```{r}
+# install.packages("gapminder")
+library(gapminder)
+?gapminder # getting an overview
+```
+
+Start by making a copy of the original data in a data frame called `df`. Then use the `str()` function to get an overview over the variable types in the data frame. The dataframe has 1704 observations and 6 variables. 
+```{r}
+df <- gapminder
+str(df)
+```
 
 ## Intro to the `ggplot2` package
 
@@ -52,22 +65,8 @@ For an overview of the most important functions and geoms available through `ggp
 library(ggplot2)
 ```
 
-In this first part of the workshop, we will go over basic principles of `ggplot2`. We will work with data from the `gapminder` package. First, install `gapminder` and get an overview of the data. The dataset contains information on life expectancy, GDP per capita, and population by country from 1952 to 2007 in increments of 5 years. Let's use the help function to get an overview of the data.
 
-```{r}
-# install.packages("gapminder")
-library(gapminder)
-?gapminder # getting an overview
-```
-
-Start by making a copy of the original data in a data frame called `df`. Then use the `str()` function to get an overview over the variable types in the data frame. The dataframe has 1704 observations and 6 variables. 
-```{r}
-df <- gapminder
-str(df)
-```
-
-
-##  Showing data distributions
+##  Illustrating distributions
 
 ### Histograms
 Histograms graph the distribution of continuous variables. In this first example, we graph the distribution of the life expectancy variable (i.e. `lifeExp`).
@@ -85,7 +84,7 @@ ggplot(df,
 ### Adjusting the number of bins
 The default number of bins is 30, which means that the entire range of the variable (here 23.60 to 82.60) is split into 30 equally spaced bins. We can change the number of bins manually. Below, we specify 60 bins to approximate a binwidth of 1 year, taking into account the range of the variable `lifeExp`.
 ```{r,  warning = F, message = F, fig.height = 2, fig.width = 3}
-min(df$lifeExp) - max(df$lifeExp) # pprox 60 years
+min(df$lifeExp) - max(df$lifeExp) # approx 60 years
 ggplot(df,
        aes(x = lifeExp)) +
   geom_histogram(bins = 60)
@@ -98,7 +97,7 @@ ggplot(df,
   geom_histogram(bins = 5)
 ```
 
-## Density plots
+### Density plots
 We saw that the shape of the distribution is highly influenced by *how many bins* we specify. If we specify too few bins, we run the risk of masking a lot of variation within the bins. If we specify too many bins, we trade parsimony for detail -- which might make it harder to draw conclusions about the overall distribution of the variable of interest from the graph.
 
 Density plots are continuous alternatives to histograms that do not rely on bins. We will not cover details about the mechanics behind density plots and their estimation here. Just know that we can interpret the height of the density curve in a similar way that we interpreted the height of the bars in a histogram: The higher the curve, the more observations we have at that specific value of the variable of interest. In this first example, we use the `geom_density()` function to create the density plot.
@@ -120,7 +119,7 @@ ggplot(df,
 The default graphs we have produced so far are not (yet) ready for publication. In particular, they lack informative labels. In addition, we might want to change the appearance of the graph in terms of size, color, linetype, etc.
 
 ## Adding title, subtitle, and axes titles
-```{r, warning = F, message = F, fig.height = 2, fig.width = 3}
+```{r, warning = F, message = F, fig.height = 2, fig.width = 5}
 ggplot(df,
        aes(x = lifeExp)) +
   geom_line(stat = "density") +
@@ -132,7 +131,7 @@ ggplot(df,
 
 ## Adjusting the range of the axes
 By default, `ggplot()` adjusted the x-axis to start not at zero but at approximately 23 to reduce the amount of empty space in the plot. We can manually adjust the range of the axes using the `coord_cartesian()` parameter.
-```{r, warning = F, message = F, fig.height = 2, fig.width = 3}
+```{r, warning = F, message = F, fig.height = 2, fig.width = 5}
 ggplot(df,
        aes(x = lifeExp)) +
   geom_line(stat = "density") +
@@ -147,7 +146,7 @@ ggplot(df,
 
 ## Changing the color
 Any changes to the appearance of the curve itself are made within the argument that specifies the geometric object to be plotted, here `geom_line()`. `R` knows many colors by name; for a great overview see http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf.  
-```{r, warning = F, message = F, fig.height = 2, fig.width = 3}
+```{r, warning = F, message = F, fig.height = 2, fig.width = 5}
 ggplot(df,
        aes(x = lifeExp)) +
   geom_line(stat = "density", 
@@ -162,7 +161,7 @@ We can also use hexadecimal or RGB (red, green, blue) strings to specify colors.
 
 Suppose, I like the general tone of the darkblue color above, but am worried that it is a bit too dark for my plot. I enter the color "darkblue" into the search field at http://www.colorhexa.com and look for a brighter alternative. Suppose I really like the color displayed in the second tile from the left on the tints scale. I can extract this color's hexadecimal value of `#2727ff` by hovering over the tile of that color.
 
-```{r, warning = F, message = F, fig.height = 2, fig.width = 3}
+```{r, warning = F, message = F, fig.height = 2, fig.width = 5}
 ggplot(df,
        aes(x = lifeExp)) +
   geom_line(stat = "density", 
@@ -177,7 +176,7 @@ We will talk more about color schemes later in the workshop.
 
 ## Changing the line type
 We can adjust the type of the line via the `linetype` parameter within `geom_line()`. For an overview of line types see  http://sape.inf.usi.ch/quick-reference/ggplot2/linetype.
-```{r, warning = F, message = F, fig.height = 2, fig.width = 3}
+```{r, warning = F, message = F, fig.height = 2, fig.width = 5}
 ggplot(df,
        aes(x = lifeExp)) +
   geom_line(stat = "density", 
@@ -192,7 +191,7 @@ ggplot(df,
 ## Changing width and opacity of the line (not shown in class)
 
 We can adjust the *width* of the line via the `size` parameter within `geom_line()`. Note that the `size` parameter is universal in the way that it controls line width in line plots and point size in scatter plots.
-```{r, warning = F, message = F, fig.height = 2, fig.width = 3}
+```{r, warning = F, message = F, fig.height = 2, fig.width = 5}
 ggplot(df,
        aes(x = lifeExp)) +
   geom_line(stat = "density", 
@@ -207,7 +206,7 @@ ggplot(df,
 
 We can adjust the *opacity* of the line via the `alpha` parameter within any geometric object. The `alpha` parameter ranges between zero and one. Adjusting the opacity of the geometric objects is especially important when plotting multiple lines (or objects) in the same graph to reduce overplotting.
 
-```{r, warning = F, message = F, fig.height = 2, fig.width = 3}
+```{r, warning = F, message = F, fig.height = 2, fig.width = 5}
 ggplot(df,
        aes(x = lifeExp)) +
   geom_line(stat = "density", 
@@ -224,7 +223,7 @@ ggplot(df,
 ## Themes
 We can alter the appearance of any element in the plot. Below, we change the pre-specified `theme` that `ggplot2` uses to determine the appearance of the plot. Popular options are `theme_bw()` or `theme_light()`. For a full list of themes, see https://ggplot2.tidyverse.org/reference/ggtheme.html. 
 
-```{r, warning = F, message = F, fig.height = 2, fig.width = 3}
+```{r, warning = F, message = F, fig.height = 2, fig.width = 5}
 ggplot(df,
        aes(x = lifeExp)) +
   geom_line(stat = "density", 
@@ -758,6 +757,7 @@ ggplot(subset(diff07, continent == "Europe" & year == 2007),
   labs(x = "", y = "Population change in millions")
 ```
 
+\newpage
 # Visualizing regression results
 
 The histograms and density plots above show us that there is substantial variation in life expectancy across countries and continents. International organizations and governments are interested in investigating these differences to get an idea of how to allocate resources for addressing related issues. Against this background, suppose we are interested in using the `gapminder` data to learn more about the determinants of a country's life expectancy. 
@@ -868,15 +868,61 @@ ggplot(df_pred,
   geom_line(aes()) +
   geom_ribbon(aes(ymin = fit - 1.96*se.fit, ymax = fit + 1.96*se.fit, fill = factor(gdpPercap)),
               alpha = 0.2,
+              color = NA)
+```
+
+
+To turn the plot into a publication-ready graph, we should give it appropriate labels and prettify it. You should consult the help files for each function, for example `?scale_color_manual()` or use Google to find the relevant parameters to control the appearance of the graph. 
+
+Below, let's give the legend better labels and manually change the color of the fitted value lines. Note the difference between `scale_fill_discrete()` and `scale_color_manual()`.
+```{r, fig.height = 4, fig.width = 6}
+ggplot(df_pred,
+       aes(x = pop, 
+           y = fit, 
+           color = factor(gdpPercap))) +
+  geom_line(aes()) +
+  geom_ribbon(aes(ymin = fit - 1.96*se.fit, ymax = fit + 1.96*se.fit, fill = factor(gdpPercap)),
+              alpha = 0.2,
               color = NA) + 
   scale_fill_discrete(labels = c("1st quartile GDP p.c.",
                                  "3rd quartile GDP p.c."),
                       name = "") +
-  scale_color_discrete(labels = c("1st quartile GDP p.c.",
+  scale_color_manual(labels = c("1st quartile GDP p.c.",
                                  "3rd quartile GDP p.c."),
-                       name = "")
+                     name = "",
+                     values = c("cornflowerblue",
+                                "goldenrod"))
 ```
 
+We need to specify `scale_*_manual()` for both if we want to display the confidence interval in the same shades as the fitted value curves. Below, we are also using the `label_number()` function from the `scales` package to make the x-axis easier to read.
+```{r, fig.height = 4, fig.width = 5, message=F, warning= F}
+library(scales)
+mycols <- c("cornflowerblue", "goldenrod")
+ggplot(df_pred,
+       aes(x = pop, 
+           y = fit, 
+           color = factor(gdpPercap))) +
+  geom_line(aes()) +
+  geom_ribbon(aes(ymin = fit - 1.96*se.fit, ymax = fit + 1.96*se.fit, fill = factor(gdpPercap)),
+              alpha = 0.2,
+              color = NA) + 
+  scale_fill_manual(labels = c("1st quartile GDP p.c.",
+                                 "3rd quartile GDP p.c."),
+                    name = "",
+                    values = mycols) +
+  scale_color_manual(labels = c("1st quartile GDP p.c.",
+                                 "3rd quartile GDP p.c."),
+                     name = "",
+                     values = mycols) +
+  labs(x = "Population (in millions)",
+       y = "Life expectancy (fitted values) with 95% CI") +
+  theme_light() +
+  theme(legend.position = "top",
+        panel.grid.minor = element_blank()) +
+  
+  # Using the scales package
+  scale_x_continuous(labels = label_number(scale = 1/1e6))
+```
 
 \newpage
 # Appendix
